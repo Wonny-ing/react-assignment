@@ -1,30 +1,59 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface IRobotStatus {
-  //
+  position: number;
+  direction: 'right' | 'left';
 }
 
 class Robot {
-  //
+  position: IRobotStatus['position'];
+  direction: IRobotStatus['direction'];
+  constructor() {
+    this.position = 0;
+    this.direction = 'right';
+  }
+  go() {
+    if (this.direction === 'right') {
+      this.position += 1;
+    } else {
+      this.position -= 1;
+    }
+  }
+  turn() {
+    if (this.direction === 'right') {
+      this.direction = 'left';
+    } else {
+      this.direction = 'right';
+    }
+  }
+  getStatus(): IRobotStatus {
+    return {
+      position: this.position,
+      direction: this.direction,
+    };
+  }
 }
 const myRobot = new Robot();
+console.log('myRobot:', myRobot);
 
 const Homework = () => {
-  // const [history, setHistory] = useState<IRobotStatus[]>([myRobot.getStatus()]);
-  // const handleGoBtn = () => {
-  //   myRobot.go();
-  //   setHistory((prev) => [...prev, myRobot.getStatus()]);
-  // };
-  // const handleTurnBtn = () => {
-  //   myRobot.turn();
-  //   setHistory((prev) => [...prev, myRobot.getStatus()]);
-  // };
+  const [history, setHistory] = useState<IRobotStatus[]>([myRobot.getStatus()]);
+  console.log('history:', history);
+
+  const handleGoBtn = () => {
+    myRobot.go();
+    setHistory((prev) => [...prev, myRobot.getStatus()]);
+  };
+  const handleTurnBtn = () => {
+    myRobot.turn();
+    setHistory((prev) => [...prev, myRobot.getStatus()]);
+  };
   return (
     <>
-      {/* <Btn onClick={handleGoBtn}>Go</Btn>
+      <Btn onClick={handleGoBtn}>Go</Btn>
       <Btn onClick={handleTurnBtn}>Turn</Btn>
       <Btn onClick={() => setHistory([])}>Clear</Btn>
       <ul>
@@ -33,7 +62,7 @@ const Homework = () => {
             {el.direction} {el.position}
           </li>
         ))}
-      </ul> */}
+      </ul>
     </>
   );
 };
